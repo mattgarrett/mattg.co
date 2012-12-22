@@ -12,17 +12,20 @@ var tempBoard;
 
 //main
 $(document).ready(function () {
-   buildInterface();
-   initializeGame();
+   initializeGame();//DEBUG ME
+   buildInterface();//DEBUG ME
    play();
 });
 
 //attaches event handlers, sets up interface
 function buildInterface() {
-   $('#play').button();
+   $('#play').button();//can't do [0], don't know why
    $('#pause').button();
    $('#play').click(play);
    $('#pause').click(pause);
+   $('#scramble').click(userScramble);
+   $('#canvas').click(userClick);
+   $('#clear').click(userClear);
 }
 
 //starts the simulation
@@ -40,6 +43,30 @@ function pause() {
    $('#pause').button('disable');
    $('#play').button('enable');
    clearInterval(intervalID);
+}
+
+//scrambles the gameboard for the user
+function userScramble() {
+   scramble(SCRAMBLE_WEIGHT);
+   draw();//draws even if game is paused
+}
+
+//clears the gameboard for the user
+function userClear() {
+   pause();
+   traverse(function(x, y) {
+      board[x][y] = false;
+   });
+   draw();
+}
+
+//responds to a user click on the game board
+//DEBUG ME
+function userClick(event) {
+   var x = Math.floor(event.offsetX / CELL_SIZE) + 1;
+   var y = Math.floor(event.offsetY / CELL_SIZE) + 1;
+   board[x][y] = !board[x][y];
+   draw();
 }
 
 //initializes the state of the game
