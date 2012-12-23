@@ -1,8 +1,9 @@
-var BOARD_WIDTH     = 60;
-var BOARD_HEIGHT    = 30;
-var CELL_SIZE       = 7;
-var SCRAMBLE_WEIGHT = .3;
+var BOARD_WIDTH     = 35;
+var BOARD_HEIGHT    = 20;
+var CELL_SIZE       = 20;
+var SCRAMBLE_WEIGHT = .2;
 var REFRESH_RATE    = 100;
+var COLOR           = "#ACACAC";
 
 var context;
 var canvas;
@@ -61,7 +62,6 @@ function userClear() {
 }
 
 //responds to a user click on the game board
-//DEBUG ME
 function userClick(event) {
    var x = Math.floor(event.offsetX / CELL_SIZE) + 1;
    var y = Math.floor(event.offsetY / CELL_SIZE) + 1;
@@ -127,12 +127,13 @@ function stopGame() {
 //  draws the current state of the game board on screen
 function draw() {
    canvas.width = canvas.width; //clears the canvas
+   context.fillStyle = COLOR;
    traverse(function (x, y) {
       if (board[x][y])
-         context.fillRect((x - 1) * CELL_SIZE,
-                          (y - 1) * CELL_SIZE,
-                          CELL_SIZE,
-                          CELL_SIZE);
+         context.fillRect((x - 1) * CELL_SIZE + 1,
+                          (y - 1) * CELL_SIZE + 1,
+                          CELL_SIZE - 2,
+                          CELL_SIZE - 2);
    });
 }
 
