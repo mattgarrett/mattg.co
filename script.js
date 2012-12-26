@@ -1,9 +1,10 @@
-var BOARD_WIDTH     = 35;
-var BOARD_HEIGHT    = 20;
+var BOARD_WIDTH     = 50;
+var BOARD_HEIGHT    = 30;
 var CELL_SIZE       = 20;
 var SCRAMBLE_WEIGHT = .2;
 var REFRESH_RATE    = 100;
 var COLOR           = "#ACACAC";
+var WRAP_EDGES      = true;
 
 var context;
 var canvas;
@@ -13,8 +14,8 @@ var tempBoard;
 
 //main
 $(document).ready(function () {
-   initializeGame();//DEBUG ME
-   buildInterface();//DEBUG ME
+   initializeGame();
+   buildInterface();
    play();
 });
 
@@ -154,16 +155,31 @@ function traverse(funct) {
 //Fixes the boarder of the board so that the cells that are
 //  outside the boarders are the same as the cells they pair with
 function boardBoarders() {
-   for (var i = 1; i < BOARD_WIDTH + 1; i++) {
-      board[i][0] = board[i][BOARD_HEIGHT];
-      board[i][BOARD_HEIGHT + 1] = board[i][1];
+   if (WRAP_EDGES) {
+      for (var i = 1; i < BOARD_WIDTH + 1; i++) {
+         board[i][0] = board[i][BOARD_HEIGHT];
+         board[i][BOARD_HEIGHT + 1] = board[i][1];
+      }
+      for (var j = 1; j < BOARD_HEIGHT + 1; j++) {
+         board[0][j] = board[BOARD_WIDTH][j];
+         board[BOARD_WIDTH + 1][j] = board[1][j];
+      }
+      board[0][0] = board[BOARD_WIDTH][BOARD_HEIGHT];
+      board[BOARD_WIDTH + 1][0] = board[1][BOARD_HEIGHT];
+      board[BOARD_WIDTH + 1][BOARD_HEIGHT + 1] = board[1][1];
+      board[0][BOARD_HEIGHT + 1] = board[BOARD_WIDTH][1];
+   } else {
+      for (var i = 1; i < BOARD_WIDTH + 1; i++) {
+         board[i][0] = false;
+         board[i][BOARD_HEIGHT + 1] = false;
+      }
+      for (var i = 1; i < BOARD_WIDTH + 1; i++) {
+         board[0][i] = false;
+         board[BOARD_WIDTH + 1][i] = false;
+      }
+      board[0][0] = false;
+      board[BOARD_WIDTH + 1][0] = false;
+      board[BOARD_WIDTH + 1][BOARD_HEIGHT + 1] = false;
+      board[0][BOARD_HEIGHT + 1] = false;
    }
-   for (var j = 1; j < BOARD_HEIGHT + 1; j++) {
-      board[0][j] = board[BOARD_WIDTH][j];
-      board[BOARD_WIDTH + 1][j] = board[1][j];
-   }
-   board[0][0] = board[BOARD_WIDTH][BOARD_HEIGHT];
-   board[BOARD_WIDTH + 1][0] = board[1][BOARD_HEIGHT];
-   board[BOARD_WIDTH + 1][BOARD_HEIGHT + 1] = board[1][1];
-   board[0][BOARD_HEIGHT + 1] = board[BOARD_WIDTH][1];
 }
