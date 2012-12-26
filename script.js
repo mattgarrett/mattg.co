@@ -119,11 +119,6 @@ function update() {
    board = tempBoard;
 }
 
-//stops the simulation
-function stopGame() {
-   clearTimeout(intervalID);
-}
-
 //  draws the current state of the game board on screen
 function draw() {
    canvas.width = canvas.width; //clears the canvas
